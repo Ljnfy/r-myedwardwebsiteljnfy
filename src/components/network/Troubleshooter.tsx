@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { GoogleGenAI } from "@google/genai";
-import { Device } from "../types";
-import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Device } from "../../lib/types";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Sparkles, Loader2, Wrench, ChevronRight, Activity } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 

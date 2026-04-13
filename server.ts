@@ -25,23 +25,20 @@ async function startServer() {
     fs.writeFileSync(path.join(mediaPath, "Home_Ambience.mp3"), "dummy content");
   }
 
-  // Mock Data Generators
-  let devices = [
-    { id: "1", name: "Main Gateway", ip: "192.168.1.1", mac: "00:1A:2B:3C:4D:5E", type: "Router", status: "online", manufacturer: "Cisco", model: "ISR 4331", os: "IOS-XE", latency: "1ms", throughput: "1.2 Gbps", lastSeen: new Date().toISOString() },
-    { id: "2", name: "Synology NAS", ip: "127.0.0.1", mac: "00:11:32:44:55:66", type: "Storage", status: "online", manufacturer: "Synology", model: "DS920+", os: "DSM 7.1", storage: "12TB / 16TB", latency: "2ms", throughput: "850 Mbps", lastSeen: new Date().toISOString(), isMounted: true },
-    { id: "3", name: "HP LaserJet Pro", ip: "192.168.1.15", mac: "A4:5D:36:77:88:99", type: "Printer", status: "online", manufacturer: "HP", model: "M404dn", os: "Proprietary", inkLevel: "45%", latency: "5ms", throughput: "10 Mbps", lastSeen: new Date().toISOString() },
-    { id: "4", name: "Workstation-01", ip: "192.168.1.101", mac: "D8:BB:C1:AA:BB:CC", type: "Workstation", status: "online", manufacturer: "Dell", model: "Precision 5820", os: "Windows 11 Pro", latency: "3ms", throughput: "450 Mbps", lastSeen: new Date().toISOString() },
-    { id: "5", name: "MacBook-Pro-M3", ip: "192.168.1.102", mac: "F0:18:98:DD:EE:FF", type: "Laptop", status: "online", manufacturer: "Apple", model: "MacBook Pro 16", os: "macOS Sonoma", latency: "8ms", throughput: "320 Mbps", lastSeen: new Date().toISOString() },
-    { id: "6", name: "Smart-TV-Living", ip: "192.168.1.105", mac: "BC:D1:1F:11:22:33", type: "IoT", status: "offline", manufacturer: "Samsung", model: "QN90A", os: "Tizen", latency: "N/A", throughput: "0 Mbps", lastSeen: "2024-03-20T10:00:00Z" },
-    { id: "7", name: "Hue-Bridge", ip: "192.168.1.20", mac: "00:17:88:AA:BB:CC", type: "IoT", status: "online", manufacturer: "Philips", model: "Hue Bridge v2", os: "Linux", latency: "15ms", throughput: "1 Mbps", lastSeen: new Date().toISOString() },
-  ];
+  // Load configuration from files
+  const configPath = path.join(process.cwd(), "config", "network.json");
+  let config = { devices: [], iot: [] };
+  
+  try {
+    if (fs.existsSync(configPath)) {
+      config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    }
+  } catch (err) {
+    console.error("Failed to load config, using empty defaults", err);
+  }
 
-  let iotDevices = [
-    { id: "iot1", name: "Living Room Lights", type: "Light", status: "on", brightness: 80, color: "#ffffff" },
-    { id: "iot2", name: "Kitchen Thermostat", type: "Thermostat", status: "online", temperature: 22, targetTemperature: 21 },
-    { id: "iot3", name: "Front Door Lock", type: "Lock", status: "locked" },
-    { id: "iot4", name: "Security Camera", type: "Camera", status: "online", recording: true },
-  ];
+  let devices = config.devices;
+  let iotDevices = config.iot;
 
   let printJobs = [
     { id: "pj1", document: "Q1_Report.pdf", user: "Admin", status: "completed", pages: 12 },

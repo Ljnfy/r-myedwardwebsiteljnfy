@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
-import { Button } from "./ui/button";
-import { Switch } from "./ui/switch";
-import { Slider } from "./ui/slider";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
+import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
+import { Slider } from "../ui/slider";
 import { 
   Lightbulb, 
   Thermometer, 
@@ -18,7 +18,7 @@ import {
   Activity
 } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 
 interface IoTDevice {
   id: string;

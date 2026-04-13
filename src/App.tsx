@@ -1,46 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Device, Alert, NetworkStats } from "./types";
-import { NetworkMap } from "./components/NetworkMap";
-import { DeviceDetails } from "./components/DeviceDetails";
-import { Troubleshooter } from "./components/Troubleshooter";
-import { StorageManager } from "./components/StorageManager";
-import { PrinterManager } from "./components/PrinterManager";
-import { RemoteAccessSetup } from "./components/RemoteAccessSetup";
-import { SecurityCenter } from "./components/SecurityCenter";
-import { SystemConfig } from "./components/SystemConfig";
-import { MediaServer } from "./components/MediaServer";
-import { SmartHome } from "./components/SmartHome";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./components/ui/card";
+import { Device, Alert, NetworkStats } from "./lib/types";
+import { Sidebar } from "./components/layout/Sidebar";
+import { Header } from "./components/layout/Header";
+import { StatCard } from "./components/dashboard/StatCard";
+import { NetworkMap } from "./components/network/NetworkMap";
+import { DeviceDetails } from "./components/network/DeviceDetails";
+import { Troubleshooter } from "./components/network/Troubleshooter";
+import { StorageManager } from "./components/storage/StorageManager";
+import { PrinterManager } from "./components/printer/PrinterManager";
+import { RemoteAccessSetup } from "./components/system/RemoteAccessSetup";
+import { SecurityCenter } from "./components/system/SecurityCenter";
+import { SystemConfig } from "./components/system/SystemConfig";
+import { MediaServer } from "./components/media/MediaServer";
+import { SmartHome } from "./components/home/SmartHome";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import { ScrollArea } from "./components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { 
   LayoutDashboard, 
-  Network, 
   Shield, 
-  Bell, 
   Search, 
-  Settings, 
-  Globe, 
   Activity, 
   Cpu, 
   Zap, 
   RefreshCw,
-  Menu,
-  X,
-  ChevronRight,
-  Film,
-  Home,
   Wifi,
   Database,
   Printer,
   Monitor,
-  Laptop
+  Laptop,
+  Settings
 } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
 export default function App() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -67,7 +61,6 @@ export default function App() {
       setAlerts(alertData);
       setStats(statData);
       
-      // Update selected device if it exists
       if (selectedDevice) {
         const updated = devData.find((d: Device) => d.id === selectedDevice.id);
         if (updated) setSelectedDevice(updated);
@@ -104,7 +97,7 @@ export default function App() {
     switch (type) {
       case "critical": return <Shield className="w-4 h-4 text-red-500" />;
       case "warning": return <Activity className="w-4 h-4 text-yellow-500" />;
-      default: return <Bell className="w-4 h-4 text-blue-500" />;
+      default: return <Activity className="w-4 h-4 text-blue-500" />;
     }
   };
 
@@ -115,7 +108,7 @@ export default function App() {
       case "Printer": return <Printer className="w-4 h-4 text-zinc-400" />;
       case "Workstation": return <Monitor className="w-4 h-4 text-blue-400" />;
       case "Laptop": return <Laptop className="w-4 h-4 text-zinc-300" />;
-      case "IoT": return <Home className="w-4 h-4 text-orange-500" />;
+      case "IoT": return <LayoutDashboard className="w-4 h-4 text-orange-500" />;
       default: return <Settings className="w-4 h-4 text-muted-foreground" />;
     }
   };
@@ -124,119 +117,19 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground flex font-sans selection:bg-blue-500/30">
       <Toaster position="top-right" theme="dark" />
       
-      {/* Sidebar */}
-      <AnimatePresence mode="wait">
-        {sidebarOpen && (
-          <motion.aside 
-            initial={{ x: -280 }}
-            animate={{ x: 0 }}
-            exit={{ x: -280 }}
-            className="w-72 border-r border-border bg-card/30 backdrop-blur-xl flex flex-col z-50 fixed inset-y-0 lg:relative"
-          >
-            <div className="p-6 flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-                <Network className="text-white w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="font-bold text-lg tracking-tight">NetHub</h1>
-                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Enterprise Core</p>
-              </div>
-            </div>
+      <Sidebar 
+        sidebarOpen={sidebarOpen} 
+        activeView={activeView} 
+        setActiveView={setActiveView} 
+      />
 
-            <nav className="flex-1 px-4 space-y-1 mt-4">
-              <NavItem 
-                icon={<LayoutDashboard className="w-4 h-4" />} 
-                label="Dashboard" 
-                active={activeView === "dashboard"} 
-                onClick={() => setActiveView("dashboard")} 
-              />
-              <NavItem 
-                icon={<Film className="w-4 h-4" />} 
-                label="Media Server" 
-                active={activeView === "media"} 
-                onClick={() => setActiveView("media")} 
-              />
-              <NavItem 
-                icon={<Home className="w-4 h-4" />} 
-                label="Smart Home" 
-                active={activeView === "home"} 
-                onClick={() => setActiveView("home")} 
-              />
-              <NavItem 
-                icon={<Shield className="w-4 h-4" />} 
-                label="Security Center" 
-                active={activeView === "security"} 
-                onClick={() => setActiveView("security")} 
-              />
-              <NavItem 
-                icon={<Globe className="w-4 h-4" />} 
-                label="Remote Access" 
-                active={activeView === "remote"} 
-                onClick={() => setActiveView("remote")} 
-              />
-              <NavItem 
-                icon={<Settings className="w-4 h-4" />} 
-                label="System Config" 
-                active={activeView === "config"} 
-                onClick={() => setActiveView("config")} 
-              />
-            </nav>
-
-            <div className="p-4 mt-auto">
-              <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-blue-400">Remote View</span>
-                  <div 
-                    onClick={() => {
-                      const nextView = activeView === "remote" ? "dashboard" : "remote";
-                      setActiveView(nextView);
-                      toast.info(nextView === "remote" ? "Switched to Remote Management Mode" : "Switched to Local Network");
-                    }}
-                    className={`w-10 h-5 rounded-full p-1 cursor-pointer transition-colors duration-200 ${activeView === "remote" ? 'bg-blue-600' : 'bg-zinc-800'}`}
-                  >
-                    <div className={`w-3 h-3 bg-white rounded-full transition-transform duration-200 ${activeView === "remote" ? 'translate-x-5' : 'translate-x-0'}`} />
-                  </div>
-                </div>
-                <p className="text-[10px] text-muted-foreground leading-relaxed">
-                  {activeView === "remote" ? "Connected via Secure Tunnel (TLS 1.3). Latency may be higher." : "Direct LAN connection established."}
-                </p>
-              </div>
-            </div>
-          </motion.aside>
-        )}
-      </AnimatePresence>
-
-      {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Header */}
-        <header className="h-16 border-b border-border px-6 flex items-center justify-between bg-background/50 backdrop-blur-md sticky top-0 z-40">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden">
-              <Menu className="w-5 h-5" />
-            </Button>
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <span>Network</span>
-              <ChevronRight className="w-3 h-3" />
-              <span className="text-foreground">Global Overview</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs font-mono">GW: 192.168.1.1</span>
-            </div>
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-5 h-5" />
-              {alerts.length > 0 && <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-background" />}
-            </Button>
-            <div className="w-8 h-8 rounded-full bg-zinc-800 border border-border flex items-center justify-center text-xs font-bold">
-              ED
-            </div>
-          </div>
-        </header>
+        <Header 
+          sidebarOpen={sidebarOpen} 
+          setSidebarOpen={setSidebarOpen} 
+          alerts={alerts} 
+        />
 
-        {/* Dashboard Area */}
         <ScrollArea className="flex-1">
           <div className="p-6 space-y-6 max-w-[1600px] mx-auto">
             {activeView === "remote" && <RemoteAccessSetup />}
@@ -247,7 +140,6 @@ export default function App() {
             
             {activeView === "dashboard" && (
               <>
-                {/* Stats Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <StatCard 
                     icon={<Activity className="text-blue-500" />} 
@@ -277,7 +169,6 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                  {/* Left Column: Network Map & Device List */}
                   <div className="xl:col-span-2 space-y-6">
                     <NetworkMap 
                       devices={devices} 
@@ -355,7 +246,6 @@ export default function App() {
                     </Card>
                   </div>
 
-                  {/* Right Column: Details & Alerts */}
                   <div className="space-y-6">
                     {selectedDevice ? (
                       <motion.div
@@ -364,26 +254,21 @@ export default function App() {
                         className="space-y-6"
                       >
                         <DeviceDetails device={selectedDevice} />
-                        
-                        {selectedDevice.type === "Storage" && (
-                          <StorageManager device={selectedDevice} />
-                        )}
-                        
-                        {selectedDevice.type === "Printer" && (
-                          <PrinterManager device={selectedDevice} />
-                        )}
-
+                        {selectedDevice.type === "Storage" && <StorageManager device={selectedDevice} />}
+                        {selectedDevice.type === "Printer" && <PrinterManager device={selectedDevice} />}
                         <Troubleshooter device={selectedDevice} />
                       </motion.div>
                     ) : (
-                      <Card className="border-border bg-card/50 border-dashed">
-                        <CardContent className="flex flex-col items-center justify-center py-24 text-center space-y-4">
-                          <div className="p-4 rounded-full bg-muted/20">
-                            <Settings className="w-10 h-10 text-muted-foreground" />
+                      <Card className="border-dashed border-2 border-border bg-transparent">
+                        <CardContent className="p-12 flex flex-col items-center justify-center text-center space-y-4">
+                          <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center">
+                            <Search className="w-8 h-8 text-muted-foreground" />
                           </div>
                           <div>
-                            <h3 className="font-bold">No Device Selected</h3>
-                            <p className="text-sm text-muted-foreground">Select a device from the list or map to view details and manage.</p>
+                            <CardTitle className="text-lg">No Device Selected</CardTitle>
+                            <p className="text-sm text-muted-foreground max-w-[200px] mx-auto mt-2">
+                              Select a node from the topology map or inventory to view real-time diagnostics.
+                            </p>
                           </div>
                         </CardContent>
                       </Card>
@@ -391,12 +276,15 @@ export default function App() {
 
                     <Card className="border-border bg-card/50">
                       <CardHeader>
-                        <CardTitle className="text-lg font-bold flex items-center gap-2">
-                          <Bell className="w-5 h-5 text-blue-500" /> Recent Alerts
-                        </CardTitle>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg font-bold">System Alerts</CardTitle>
+                          <Badge variant="secondary" className="bg-red-500/10 text-red-500 border-red-500/20">
+                            {alerts.length} Active
+                          </Badge>
+                        </div>
                       </CardHeader>
                       <CardContent className="p-0">
-                        <ScrollArea className="h-[300px]">
+                        <ScrollArea className="h-[400px]">
                           <div className="divide-y divide-border">
                             {alerts.map((alert) => (
                               <div key={alert.id} className="p-4 hover:bg-muted/20 transition-colors space-y-1">
@@ -430,62 +318,5 @@ export default function App() {
         </ScrollArea>
       </main>
     </div>
-  );
-}
-
-function NavItem({ icon, label, active = false, onClick }: { icon: React.ReactNode, label: string, active?: boolean, onClick?: () => void }) {
-  return (
-    <button 
-      onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-      active 
-        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
-        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-    }`}>
-      {icon}
-      {label}
-    </button>
-  );
-}
-
-function StatCard({ icon, label, value, subValue, progress }: { icon: React.ReactNode, label: string, value: string | number, subValue: string, progress?: number }) {
-  return (
-    <Card className="border-border bg-card/50 hover:bg-card transition-colors">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-2 rounded-lg bg-muted/50">
-            {icon}
-          </div>
-          {progress !== undefined && (
-            <div className="w-12 h-12 relative">
-              <svg className="w-full h-full" viewBox="0 0 36 36">
-                <path
-                  className="stroke-zinc-800"
-                  strokeWidth="3"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  className="stroke-blue-500"
-                  strokeWidth="3"
-                  strokeDasharray={`${progress}, 100`}
-                  strokeLinecap="round"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">
-                {progress}%
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="space-y-1">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
-          <p className="text-2xl font-bold tracking-tight">{value}</p>
-          <p className="text-xs text-muted-foreground">{subValue}</p>
-        </div>
-      </CardContent>
-    </Card>
   );
 }

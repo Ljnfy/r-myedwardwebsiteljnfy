@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Device, PrintJob } from "../types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
-import { Progress } from "./ui/progress";
-import { Badge } from "./ui/badge";
+import { Device, PrintJob } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { Progress } from "../ui/progress";
+import { Badge } from "../ui/badge";
 import { Printer, List, Settings2, Play, Trash2, Droplets } from "lucide-react";
 import { toast } from "sonner";
 

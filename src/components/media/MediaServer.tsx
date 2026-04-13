@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
-import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
 import { Play, Film, Music, Image as ImageIcon, Search, Filter, MoreVertical, Download, Share2 } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import { toast } from "sonner";
 
 interface MediaItem {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Device, FileItem } from "../types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
+import { Device, FileItem } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
 import { Folder, File, HardDrive, ExternalLink, Unlink, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 

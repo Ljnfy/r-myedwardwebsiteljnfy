@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Device } from "../types";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { ScrollArea } from "./ui/scroll-area";
-import { Input } from "./ui/input";
+import { Device } from "../../lib/types";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { ScrollArea } from "../ui/scroll-area";
+import { Input } from "../ui/input";
 import { Terminal, Settings, Activity, Database, Printer, Monitor, Laptop, Wifi, Shield, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 

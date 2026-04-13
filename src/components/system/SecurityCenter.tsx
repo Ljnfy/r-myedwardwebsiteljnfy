@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Shield, ShieldAlert, ShieldCheck, Lock, Unlock, Eye, EyeOff, RefreshCw } from "lucide-react";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Switch } from "./ui/switch";
-import { Progress } from "./ui/progress";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Switch } from "../ui/switch";
+import { Progress } from "../ui/progress";
 
 export const SecurityCenter: React.FC = () => {
   return (

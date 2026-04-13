@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Settings, Server, Database, Network, Save, RotateCcw, Cpu, HardDrive } from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Slider } from "./ui/slider";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Slider } from "../ui/slider";
 import { toast } from "sonner";
 
 export const SystemConfig: React.FC = () => {
